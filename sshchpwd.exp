@@ -27,13 +27,15 @@ set port [lindex $argv 1]
 set tokpwd [lindex $argv 2]
 set oldpwd $env(OLD_PASSWORD)
 set newpwd $env(NEW_PASSWORD)
+set loginuser $env(SSH_LOGINUSER)
 set prompt "\[>%\\$#\] "
 
 if { $port == "" }  { set port "22" }
 if { $tokpwd == "" }  { set tokpwd $oldpwd }
+if { $loginuser == "" }  { set loginuser $env(USER)}
 
 send_user "connecting to $server on port $port\n"
-spawn ssh -p $port $server
+spawn ssh -l $loginuser -p $port $server
 
 # Mission of this first expect - get to the shell command prompt. If the
 # password is expired and we have to change it before getting to the prompt,
